@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  
+Parameters:
+  
+Resources:
+  LogicalID:
+    Type: AWS::Lambda::Function
+    Properties:
+      Architectures: 
+        Architectures
+      Code: # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-code.html
+            # For Python and Node.js functions, you can write in the template. Otherwise if a .zip file, you can specify the location of an object in S3
+        ImageUri: "String"
+        S3Bucket: "String"
+        S3Key: "String"
+        S3ObjectVersion: "String"
+        ZipFile: "String"
+      CodeSigningConfigArn: "String"
+      DeadLetterConfig:
+        TargetArn: "String"
+      Description: "String"
+      Environment:
+      EphemeralStorage:
+        Size: Number
+      FileSystemConfigs: 
+        FileSystemConfigs
+      FunctionName: "String"
+      Handler: "String"  # If you take lambda_function.py (that has a function called lambda_def) and zip it and name something else like lambda_zipped, 
+      # then for the handler you would need to write lambda_def
+      ImageConfig:
+        Command:
+          -
+        EntryPoint:
+          -
+        WorkingDirectory: "String"
+      KmsKeyArn: "String"
+      Layers: 
+        Layers
+      MemorySize: Number
+      PackageType: "String"
+      ReservedConcurrentExecutions: Number
+      Role: "String" # Required
+      Runtime: "String"
+      RuntimeManagementConfig:
+        RuntimeVersionArn: "String"
+        UpdateRuntimeOn: "String"
+      SnapStart:
+        ApplyOn: "String"
+      Tags: 
+        Tags
+      Timeout: Number
+      TracingConfig:
+        Mode: "String"
+      VpcConfig:
+        SecurityGroupIds:
+          -
+        SubnetIds:
+          -
+Outputs:

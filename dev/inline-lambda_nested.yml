@@ -1,0 +1,16 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  MyFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.lambda_handler
+      Timeout: 30
+      #Role: !GetAtt IamXtachPolicyRoleLambdaRole.Arn
+      Runtime: python3.8
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/pm_LambdaServiceRole
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context):
+              print("Event: %s" % json.dumps(event))

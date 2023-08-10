@@ -1,0 +1,25 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+## New job by Sohail
+    JobASohailJobA:
+        Type: 'AWS::CloudFormation::Stack'
+        Properties:
+            TemplateURL: !Sub ''
+            Parameters:
+                JobCommand: glueetl
+                PythonVersion: '3'
+                ScriptLocation: s3://"bucketName/SCRIPTS/GLUE/"JobName"
+                Connections: "connection name"
+                DefaultArgumentsJobLanguage: python
+                JarFiles: s3://"BucketName"/CONFIGS/SNOW/spark-snowflake_2.11-2.5.5-spark_2.4.jar,s3://"BucketName"/CONFIGS/SNOW/snowflake-jdbc-3.11.0.jar
+                TempDirPath: s3://pm-ue1-parts-merch-dev/SCRIPTS/TEMP
+                # ConnectionParamaetr:
+                JobDescription: 'ViaCloudFormation'
+                GlueVersion: '1.0'
+                MaxConcurrentRuns: '1'
+                MaxCapacity: '2'
+                MaxRetries: '1'
+                JobName: "Job name"
+                RoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/"glueServiceRole"
+## DB2_TO_S3_GCSS_Z1P1.Z1DH001$.ACC_RT
