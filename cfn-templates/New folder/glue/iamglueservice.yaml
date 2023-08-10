@@ -1,0 +1,50 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  GlueRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: AWS IAM role for AWS Glue resources
+      RoleName: GlueRoleName
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - glue.amazonaws.com
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+      Policies:
+        - PolicyName: ReadFromSpecifiedPublicS3Bucket
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                  - s3:GetObject
+                Resource:
+                  - arn:aws:s3:::gluescripts.cdn.com/*
+        - PolicyName: ReadAndWriteFromSpecifiedPrivateS3Bucket
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:List*
+                  - s3:Head*
+                  - s3:Get*
+                  - s3:Put*
+                Resource: arn:aws:s3:::gluescripts.cdn.com-${AWS::AccountId}-${AWS::Region}
+              - Effect: Allow
+                Action:
+                  - s3:List*
+                  - s3:Head*
+                  - s3:GetObject*
+                  - s3:PutObject*
+                  - s3:DeleteObject*
+                Resource: arn:aws:s3:::gluescripts.cdn.com-${AWS::AccountId}-${AWS::Region}/*

@@ -1,0 +1,26 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Using AWS CloudFormation to model and provision AWS Glue Workflows
+
+Parameters:
+  GlueWorkflowName:
+    Type: String
+    Description: Glue workflow that tracks all triggers, jobs, crawlers as a single entity
+Resources:
+  
+  TestWorkflowDevops:
+    Type: AWS::Glue::Workflow
+    Properties: 
+      Description: Glue workflow that tracks specified triggers, jobs, and crawlers as a single entity
+      Name: !Ref GlueWorkflowName
+
+Outputs:
+  StackName:
+    Description: Stack name.
+    Value: !Sub '${AWS::StackName}'
+  WorkflowName:
+    Description: Name of the WorkflowName
+    Value: !Ref TestWorkflowDevops
+
+  
+  

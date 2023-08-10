@@ -1,0 +1,22 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  testjob1:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: j_Emit_Started_Event
+      Description: Put event that indicates workflow started (event includes workflow
+        name, run id, and state)
+      MaxRetries: 3
+      Role: 'arn:aws:iam::586210271400:role/GlueRoleName'
+      Command:
+        Name: pythonshell
+        PythonVersion: "3"
+        ScriptLocation: 's3://gluescripts.cdn.com/gluescripts//test1.py'
+      ExecutionProperty:
+        MaxConcurrentRuns: 1
+      DefaultArguments:
+        --LOG_LEVEL: GlueJobLogLevel
+        --enable-continuous-cloudwatch-log: "true"
+        --enable-continuous-log-filter: "false"
+        --job-bookmark-option: job-bookmark-disable

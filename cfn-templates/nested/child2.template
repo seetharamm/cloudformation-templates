@@ -1,0 +1,16 @@
+---
+Resources:
+  InsightVmmmmm:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      S3BucketName: !ImportValue UsersTableArn
+      Policies:
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Action:
+                - s3:List*
+                - s3:GetObject
+              Resource:
+                - !Sub arn:aws:s3:::${S3BucketName}/*
+              Effect: Allow

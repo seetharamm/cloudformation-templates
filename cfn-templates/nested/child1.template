@@ -1,0 +1,11 @@
+---
+Resources:
+  Bucket:
+    Type: AWS::S3::Bucket
+Outputs:
+        UsersTableArnnn:
+            Description: The ARN for the Users Table
+            Value:
+                Ref: Bucket
+            Export:
+                Name: UsersTableArn

@@ -1,0 +1,89 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+    An example Lambda deployment using CloudFormation. 
+Parameters:
+  LambdaFunctionName:
+    Type: String
+    MinLength: '1'
+    MaxLength: '64'
+    Description: The name of the Lambda function to be deployed
+    Default: Lambda-Function-CFNExample
+  LambdaRoleName:
+    Type: String
+    MinLength: '1'
+    MaxLength: '64'
+    AllowedPattern: '[\w+=,.@-]+'
+    Description: The name of the IAM role used as the Lambda execution role
+    Default: Lambda-Role-CFNExample
+  LambdaPolicyName:
+    Type: String
+    MinLength: '1'
+    MaxLength: '128'
+    AllowedPattern: '[\w+=,.@-]+'
+    Default: Lambda-Policy-CFNExample
+  EnvName:
+    Type: String
+    Description: Name of an environment. 'dev', 'staging', 'prod' and any name.
+    AllowedPattern: ^.*[^0-9]$
+    ConstraintDescription: Must end with non-numeric character.
+    Default: 'Dev'
+  S3Bucket: 
+    Type: String
+    Description: Name of s3 bucket.
+    Default: Dev
+  S3Key: 
+    Type: String
+    Description: Name of prefix .
+    Default: Dev
+  LambdaHandlerPath:  
+    Type: String
+    Description: Path of a Lambda Handler. 
+    AllowedPattern: ^.*[^0-9]$
+    ConstraintDescription: Must end with non-numeric character.
+  DeadLetterTargetArn:
+    Type: String
+    Description: The dead-letter queue for failed asynchronous invocations.
+    Default: '' 
+  MemorySize:
+    Required: No
+    Type: Integer
+    Minimum: 128
+    Maximum: 10240
+  ReservedConcurrentExecutions:
+    Required: No
+    Type: Integer
+    Minimum: 0
+  Role:
+    Type: String
+    Required: Yes
+    Description: The Amazon Resource Name (ARN) of the function's execution role.
+  ZipFile:
+    Type: String
+    Description: Inline function code
+  Handler: 
+    Type: String
+    Description: Name of the handler function
+    Default: index.lambda_handler
+  Runtime: 
+    Type: String
+    Default: python3.8
+  Description:
+    Type: String
+  
+    
+Resources:        
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Description: !Ref Description
+      FunctionName: !Ref LambdaFunctionName
+      Handler: !Ref Handler
+      MemorySize: !Ref MemorySize
+      Runtime: !Ref Runtime
+      Role: !Ref Role
+      Timeout: 240
+      Code:
+        ZipFile: !Ref ZipFile
+        
+        

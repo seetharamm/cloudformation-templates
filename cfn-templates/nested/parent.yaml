@@ -1,0 +1,11 @@
+---
+Resources:
+  SubstackA:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: 'https://public-bucket123.s3.us-east-2.amazonaws.com/templates/child1.template'
+  SubstackBBBB:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: SubstackA
+    Properties:
+      TemplateURL: 'https://public-bucket123.s3.us-east-2.amazonaws.com/templates/child2.template'

@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Example Stack
+
+
+ 
+
+Resources:
+  
+  Lambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: AwsLambdaMinimalExample3221
+      Handler: index.handler
+      Runtime: nodejs14.x
+      Role: !GetAtt LambdaRole.Arn
+      MemorySize: 1024
+      Code:
+        ZipFile: |
+          exports.handler = async (event) => {
+            return "Hello World!";
+          }
+
+  S3InvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Lambda
+      Principal: lambda.amazonaws.com
+      SourceArn: 'lambdaFunArn'
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: '/'
+      Policies:
+      - PolicyName: s3
+        PolicyDocument:
+          Statement:
+          - Effect: Allow
+            Action:
+              - lambda:*
+            Resource:
+              - 'lambdaFunArn'
+              

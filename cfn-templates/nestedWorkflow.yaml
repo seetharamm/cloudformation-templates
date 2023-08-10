@@ -1,0 +1,11 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:   
+    JOBMFTOAWSPRODSVCLVL:
+        Type: 'AWS::CloudFormation::Stack'
+        Properties:
+            TemplateURL: !Sub 'https://s3.${AWS::Region}.amazonaws.com/ecat-azdo-central-parts-merch-us-east-1/dev/baseTemplates/glue_workflow.yaml'
+            Parameters:
+                GlueWorkflowName: 'testWorkflowForDevops'
+                
+ 

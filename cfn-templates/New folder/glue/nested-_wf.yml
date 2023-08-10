@@ -1,0 +1,15 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  GlueWorkflowName1:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.us-east-2.amazonaws.com/gluescripts.cdn.com/workflow.yml
+      Parameters:
+        GlueWorkflowName: GlueWorkflowName1
+  GlueWorkflowName2:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.us-east-2.amazonaws.com/gluescripts.cdn.com/workflow.yml
+      Parameters:
+        GlueWorkflowName: GlueWorkflowName2

@@ -1,0 +1,30 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Using AWS CloudFormation to model and provision AWS Glue Workflows'
+
+
+  TriggerJobCovid19WorkflowStart:
+    Type: AWS::Glue::Trigger
+    Properties:
+      Name: t_Start
+      Type: SCHEDULED
+      Schedule: cron(0 8 * * ? *) 
+      StartOnCreation: false
+      WorkflowName: !Ref GlueWorkflowName
+      Actions:
+        - JobName: !Ref Covid19WorkflowStarted
+
+  TriggerJobCovid19WorkflowEnd:
+    Type: AWS::Glue::Trigger
+    Properties:
+      Name: t_End
+      Type: CONDITIONAL
+      StartOnCreation: true
+      WorkflowName: !Ref GlueWorkflowName
+      Actions:
+        - JobName: !Ref Covid19WorkflowEnded
+      Predicate:
+        Conditions:
+          - CrawlerName: !Ref Covid19Aggregated
+            LogicalOperator: EQUALS
+            CrawlState: SUCCEEDED

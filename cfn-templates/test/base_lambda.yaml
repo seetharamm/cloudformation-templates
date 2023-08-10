@@ -1,0 +1,75 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+    An example Lambda deployment using CloudFormation. 
+Parameters:
+  LambdaFunctionName:
+    Type: String
+    Description: The name of the Lambda function to be deployed
+    Default: Lambda-Function-CFNExample
+  LambdaRoleName:
+    Type: String
+    Description: The name of the IAM role used as the Lambda execution role
+    Default: arn:aws:iam::586210271400:role/lambdarole-LambdaFunctionRole-NNFQ4GVFZXFW
+  EnvName:
+    Type: String
+    Description: Name of an environment. 'dev', 'staging', 'prod' and any name.
+    AllowedPattern: ^.*[^0-9]$
+    ConstraintDescription: Must end with non-numeric character.
+    Default: 'Dev'
+  S3Bucket: 
+    Type: String
+    Description: Name of s3 bucket.
+    Default: Dev
+  S3Key: 
+    Type: String
+    Description: Name of prefix .
+    Default: Dev
+  LambdaHandlerPath:  
+    Type: String
+    Description: Path of a Lambda Handler.
+    ConstraintDescription: Must end with non-numeric character.
+    Default: ''
+  DeadLetterTargetArn:
+    Type: String
+    Description: The dead-letter queue for failed asynchronous invocations.
+    Default: '' 
+  MemorySize:
+    Type: Number
+    Default: 128
+  ReservedConcurrentExecutions:
+    Type: Number
+    Default: 1
+  Role:
+    Type: String
+    Description: The Amazon Resource Name (ARN) of the function's execution role.
+    Default: 'arn:aws:iam::586210271400:role/lambdarole-LambdaFunctionRole-NNFQ4GVFZXFW'
+  ZipFile:
+    Type: String
+    Description: Inline function code
+  Handler: 
+    Type: String
+    Description: Name of the handler function
+    Default: index.lambda_handler
+  Runtime: 
+    Type: String
+    Default: python3.8
+  Description:
+    Type: String
+    Default: ''
+  
+    
+Resources:        
+  LambdaFunction321:
+    Type: AWS::Lambda::Function
+    Properties:
+      Description: !Ref Description
+      FunctionName: !Ref LambdaFunctionName
+      Handler: !Ref Handler
+      MemorySize: !Ref MemorySize
+      Runtime: !Ref Runtime
+      Role: !Ref LambdaRoleName
+      Code:
+        ZipFile: !Ref ZipFile
+        
+        

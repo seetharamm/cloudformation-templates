@@ -1,0 +1,19 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:   
+    pmTestFunction123:
+        Type: 'AWS::CloudFormation::Stack'
+        Properties:
+            TemplateURL: !Sub 'https://s3.${AWS::Region}.amazonaws.com/gluescripts.cdn.com/base_lambda.yaml'
+            Parameters:
+                Handler: index.lambda_handler
+                LambdaFunctionName: pmTestFunction
+                Runtime: python3.8
+                LambdaRoleName: arn:aws:iam::586210271400:role/lambdarole-LambdaFunctionRole-NNFQ4GVFZXFW
+                ZipFile: |
+                    import json
+                    def handler(event, context):
+                    print("Event: %s" % json.dumps(event))
+
+                
+ 

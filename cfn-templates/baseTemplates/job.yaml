@@ -1,0 +1,109 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Provisioning a Glue Job
+Parameters:
+  JobCommand:
+    Type: String
+    AllowedValues:
+    - 'glueetl'
+    - 'pythonshell'
+  PythonVersion:
+    Type: String
+    AllowedValues:
+    - '2'
+    - '3'
+  ScriptLocation:
+    Type: String
+  Connections:
+    Type: String
+    Default: ConnectionsNotApplicable
+  DefaultArgumentsJobLanguage:
+    Type: String
+    AllowedValues:
+    - 'scala'
+    - 'python'
+  JarFiles:
+    Type: String
+    Default: ''
+  PythonFiles:
+    Type: String
+    Default: ''
+  TempDirPath:
+    Type: String
+    Default: ''
+  JobDescription:
+    Type: String
+  GlueVersion:
+    Type: String
+    AllowedValues:
+    - '0.9'
+    - '1.0'
+    - '2.0'
+  MaxConcurrentRuns:
+    Type: String
+  MaxCapacity:
+    Type: String
+  MaxRetries:
+    Type: String
+  JobName:
+    Type: String
+  RoleArn:
+    Type: String
+  Timeout:
+    Type: String
+    Default: '60'
+  NumberOfWorkers:
+    Type: Number
+    Default: ''
+    MaxValue: '299'
+  WorkerType:
+    Type: String
+    Default: ''
+    AllowedValues:
+    - ''
+    - 'Standard'
+    - 'G.1X'
+    - 'G.2X'
+  
+Conditions:
+  ConnectionsNotApplicable: !Not [!Equals [!Ref Connections, '']]
+  JarFile: !Not [!Equals [!Ref JarFiles, '']]
+  PythonFile: !Not [!Equals [!Ref PythonFiles, '']]
+  TempFile: !Not [!Equals [!Ref TempDirPath, '']] # TempFile variable is set to true if TempDirPath is !NOT equal to ''. TempFile is then referenced on line 90
+  NumWorkers: !Not [!Equals [!Ref NumberOfWorkers, '']]
+  Worker: !Not [!Equals [!Ref WorkerType, '']]
+
+Resources:
+  GlueJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: !Ref JobCommand
+        PythonVersion: !Ref PythonVersion
+        ScriptLocation: !Ref ScriptLocation
+      Connections:
+        !If
+        - 'ConnectionsNotApplicable'
+        -
+          Connections:
+            - !Ref Connections
+        - !Ref 'AWS::NoValue'
+      DefaultArguments: {'--job-language': !Ref DefaultArgumentsJobLanguage, '--job-bookmark-option': 'job-bookmark-enable', '--extra-jars': !If [JarFile, !Ref JarFiles, !Ref 'AWS::NoValue'], '--extra-py-files': !If [PythonFile, !Ref PythonFiles, !Ref 'AWS::NoValue'] ,'--TempDir': !If [TempFile, !Ref TempDirPath, !Ref 'AWS::NoValue']}
+      Description: !Ref JobDescription
+      ExecutionProperty:
+        MaxConcurrentRuns: !Ref MaxConcurrentRuns
+      GlueVersion: !Ref GlueVersion
+      MaxCapacity: !Ref MaxCapacity
+      MaxRetries: !Ref MaxRetries
+      Timeout: !Ref Timeout
+      Name: !Ref JobName
+      Role: !Ref RoleArn
+      NumberOfWorkers: !If [NumWorkers, !Ref NumberOfWorkers, !Ref 'AWS::NoValue']
+      WorkerType: !If [Worker, !Ref WorkerType, !Ref 'AWS::NoValue']
+
+Outputs:
+  StackName:
+    Description: Stack name.
+    Value: !Sub '${AWS::StackName}'
+  JobName:
+    Description: Name of the Job
+    Value: !Ref GlueJob

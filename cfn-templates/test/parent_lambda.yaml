@@ -1,0 +1,19 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:   
+    GlueWorkflowName:
+        Type: 'AWS::CloudFormation::Stack'
+        Properties:
+            TemplateURL: !Sub 'https://s3.${AWS::Region}.amazonaws.com/azdo-cfn-price-merch-dev-us-east-1/deployment/cloudformation/test/baseTemplates/base_lambda.yaml'
+            Parameters:
+                Handler: index.lambda_handler
+                Timeout: 30
+                Runtime: python3.8
+                Role: !Sub arn:aws:iam::${AWS::AccountId}:role/pm_LambdaServiceRole
+                ZipFile: |
+                    import json
+                    def handler(event, context):
+                    print("Event: %s" % json.dumps(event))
+
+                
+ 

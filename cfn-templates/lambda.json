@@ -1,0 +1,17 @@
+{
+    "Resources": {
+"KinesisSourceMapping": {
+    "Type": "AWS::Lambda::EventSourceMapping",
+    "Properties": {
+        "EventSourceArn": "arn:aws:s3:::public-bucket123",
+        "FunctionName": {
+            "Fn::GetAtt": [
+                "lambda-stack-AppendItemToListFunction-t4EX5dxe1aEt",
+                "Arn"
+            ]
+        },
+        "StartingPosition": "TRIM_HORIZON"
+    }
+}
+}
+}
